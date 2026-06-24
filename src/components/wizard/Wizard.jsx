@@ -4,6 +4,8 @@ import Step2 from "../../steps/Step2";
 import Step3 from "../../steps/Step3";
 import ProgressBar from "./ProgressBar";
 import StepNavigation from "./StepNavigation";
+
+
 const stepRegistry = [
   {
     id: 1,
@@ -21,9 +23,7 @@ const stepRegistry = [
     component: Step3,
   },
 ];
-const saveDraft = () => {
-  alert("Draft saved!");
-};
+
 function Wizard() {
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -49,24 +49,27 @@ function Wizard() {
         Loan Application Wizard
       </h1>
 
-
-
-
-      <ProgressBar
-  currentStep={currentStep}
-  totalSteps={stepRegistry.length}
-  stepNames={stepRegistry.map((step) => step.name)}
-/>
+      <p className="mb-4">Progress: {progress}%</p>
 
       <CurrentStepComponent />
 
-     <StepNavigation
-  onPrevious={prevStep}
-  onNext={nextStep}
-  onSaveDraft={saveDraft}
-  isFirstStep={currentStep === 0}
-  isLastStep={currentStep === stepRegistry.length - 1}
-/>
+      <div className="flex justify-between mt-6">
+        <button
+          onClick={prevStep}
+          disabled={currentStep === 0}
+          className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+
+        <button
+          onClick={nextStep}
+          disabled={currentStep === stepRegistry.length - 1}
+          className="px-4 py-2 bg-accent text-white rounded disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }

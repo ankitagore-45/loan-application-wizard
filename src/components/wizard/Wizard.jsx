@@ -2,6 +2,7 @@ import { useState } from "react";
 import Step1 from "../../steps/Step1";
 import Step2 from "../../steps/Step2";
 import Step3 from "../../steps/Step3";
+import Step4 from "../../steps/Step4";
 import ProgressBar from "./ProgressBar";
 import StepNavigation from "./StepNavigation";
 
@@ -21,6 +22,11 @@ const stepRegistry = [
     id: 3,
     name: "Loan",
     component: Step3,
+  },
+   {
+    id: 4,
+    name: "Address",
+    component: Step4,
   },
 ];
 

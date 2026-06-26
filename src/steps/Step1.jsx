@@ -31,7 +31,10 @@ function Step1() {
         ]}
         selectedValue={selectedLoanType}
         onChange={(e) => {
-          setValue("loanType", e.target.value);
+          setValue("loanType", e.target.value, {
+            shouldValidate: true,
+            shouldDirty: true,
+          });
           trigger("loanType");
         }}
         error={errors.loanType?.message}

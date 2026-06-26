@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { wizardSchema } from "../../schemas/wizardSchema";
 import { defaultValues } from "../../form/defaultValues";
-import { getStepFields } from "../../schemas/schemaFactory";
+
 
 import Step1 from "../../steps/Step1";
 import Step2 from "../../steps/Step2";
@@ -15,11 +15,33 @@ import Step5 from "../../steps/Step5";
 import ProgressBar from "./ProgressBar";
 
 const stepRegistry = [
-  { id: 1, name: "Loan", component: Step1 },
-  { id: 2, name: "Personal", component: Step2 },
-  { id: 3, name: "KYC", component: Step3 },
-  { id: 4, name: "Address", component: Step4 },
-  { id: 5, name: "Employment", component: Step5 },
+  { id: 1, name: "Loan", component: Step1 ,fields: ["loanType", "amount", "tenure", "purpose"],},
+  { id: 2, name: "Personal", component: Step2,fields: [
+      "fullName",
+      "dob",
+      "gender",
+      "maritalStatus",
+      "fatherName",
+      "motherName",
+      "email",
+      "mobile",
+      "alternateMobile",
+    ], },
+  { id: 3, name: "KYC", component: Step3 ,fields: ["pan", "aadhaar", "aadhaarConsent"],},
+  { id: 4, name: "Address", component: Step4 ,  fields: [
+      "houseNo",
+      "street",
+      "pinCode",
+      "city",
+      "state",
+      "postOffice",
+      "residenceType",
+      "rentAmount",
+      "yearsAtAddress",
+      "previousAddress",
+      "sameAsPermanent",
+    ],},
+  { id: 5, name: "Employment", component: Step5, fields: ["employmentType"], },
 ];
 
 
@@ -36,7 +58,7 @@ function Wizard() {
   const CurrentStepComponent = stepRegistry[currentStep].component;
 
   const nextStep = async () => {
-    const isValid = await methods.trigger(getStepFields(currentStep));
+    const isValid = await methods.trigger(stepRegistry[currentStep].fields);
 
     if (isValid && currentStep < stepRegistry.length - 1) {
       setCurrentStep(currentStep + 1);

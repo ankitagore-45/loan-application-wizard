@@ -11,6 +11,7 @@ import Step2 from "../../steps/Step2";
 import Step3 from "../../steps/Step3";
 import Step4 from "../../steps/Step4";
 import Step5 from "../../steps/Step5";
+import Step8 from "../../steps/Step8";
 
 import ProgressBar from "./ProgressBar";
 
@@ -42,6 +43,8 @@ const stepRegistry = [
       "sameAsPermanent",
     ],},
   { id: 5, name: "Employment", component: Step5, fields: ["employmentType"], },
+  {id: 6,name: "Review", component: Step8, fields: [],
+}
 ];
 
 

@@ -1,13 +1,12 @@
 import { z } from "zod";
 
+
 export const wizardSchema = z.object({
-  // Step 1
   loanType: z.string().min(1, "Please select a loan type"),
   amount: z.coerce.number().min(1, "Loan amount is required"),
   tenure: z.coerce.number().min(1, "Tenure is required"),
   purpose: z.string().min(1, "Please select a purpose"),
 
-  // Step 2
   fullName: z.string().min(2, "Full name is required"),
   dob: z.string().min(1, "Date of birth is required"),
   gender: z.string().min(1, "Please select gender"),
@@ -18,12 +17,10 @@ export const wizardSchema = z.object({
   mobile: z.string().regex(/^[6-9]\d{9}$/, "Enter valid mobile number"),
   alternateMobile: z.string().optional(),
 
-  // Step 3
   pan: z.string().min(1, "PAN is required"),
   aadhaar: z.string().min(1, "Aadhaar is required"),
   aadhaarConsent: z.boolean(),
 
-  // Step 4
   houseNo: z.string().min(1, "House number is required"),
   street: z.string().min(1, "Street is required"),
   pinCode: z.string().regex(/^\d{6}$/, "PIN must be 6 digits"),
@@ -36,7 +33,6 @@ export const wizardSchema = z.object({
   previousAddress: z.string().optional(),
   sameAsPermanent: z.boolean(),
 
-  // Step 5
   employmentType: z.string().min(1, "Employment type is required"),
   companyName: z.string().optional(),
   designation: z.string().optional(),

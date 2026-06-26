@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { wizardSchema } from "../../schemas/wizardSchema";
 import { defaultValues } from "../../form/defaultValues";
+import { getStepFields } from "../../schemas/schemaFactory";
 
 import Step1 from "../../steps/Step1";
 import Step2 from "../../steps/Step2";
@@ -21,30 +22,7 @@ const stepRegistry = [
   { id: 5, name: "Employment", component: Step5 },
 ];
 
-const stepFields = {
-  0: ["loanType", "amount", "tenure", "purpose"],
-  1: [
-    "fullName",
-    "dob",
-    "gender",
-    "maritalStatus",
-    "fatherName",
-    "motherName",
-    "email",
-    "mobile",
-  ],
-  2: ["pan", "aadhaar", "aadhaarConsent"],
-  3: [
-    "houseNo",
-    "street",
-    "pinCode",
-    "city",
-    "state",
-    "postOffice",
-    "residenceType",
-  ],
-  4: ["employmentType"],
-};
+
 
 function Wizard() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -58,7 +36,7 @@ function Wizard() {
   const CurrentStepComponent = stepRegistry[currentStep].component;
 
   const nextStep = async () => {
-    const isValid = await methods.trigger(stepFields[currentStep]);
+    const isValid = await methods.trigger(getStepFields(currentStep));
 
     if (isValid && currentStep < stepRegistry.length - 1) {
       setCurrentStep(currentStep + 1);

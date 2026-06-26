@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { wizardSchema } from "../../schemas/wizardSchema";
+import { defaultValues } from "../../form/defaultValues";
 
 import Step1 from "../../steps/Step1";
 import Step2 from "../../steps/Step2";
@@ -8,7 +12,6 @@ import Step4 from "../../steps/Step4";
 import Step5 from "../../steps/Step5";
 
 import ProgressBar from "./ProgressBar";
-import { defaultValues } from "../../form/defaultValues";
 
 const stepRegistry = [
   { id: 1, name: "Loan", component: Step1 },
@@ -18,18 +21,46 @@ const stepRegistry = [
   { id: 5, name: "Employment", component: Step5 },
 ];
 
+const stepFields = {
+  0: ["loanType", "amount", "tenure", "purpose"],
+  1: [
+    "fullName",
+    "dob",
+    "gender",
+    "maritalStatus",
+    "fatherName",
+    "motherName",
+    "email",
+    "mobile",
+  ],
+  2: ["pan", "aadhaar", "aadhaarConsent"],
+  3: [
+    "houseNo",
+    "street",
+    "pinCode",
+    "city",
+    "state",
+    "postOffice",
+    "residenceType",
+  ],
+  4: ["employmentType"],
+};
+
 function Wizard() {
   const [currentStep, setCurrentStep] = useState(0);
 
   const methods = useForm({
+    resolver: zodResolver(wizardSchema),
     defaultValues,
     mode: "onBlur",
   });
 
   const CurrentStepComponent = stepRegistry[currentStep].component;
 
-  const nextStep = () => {
-    if (currentStep < stepRegistry.length - 1) {
+  const nextStep = async () => {
+    const isValid = await methods.trigger(stepFields[currentStep]);
+
+    if (isValid && currentStep < stepRegistry.length - 1) {
       setCurrentStep(currentStep + 1);
     }
   };

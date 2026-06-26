@@ -1,29 +1,29 @@
-function ProgressBar({ currentStep, totalSteps, stepNames }) {
-  const progress = ((currentStep + 1) / totalSteps) * 100;
-
+function ProgressBar({ steps = [], currentStep = 0, progress = 0 }) {
   return (
     <div className="mb-6">
-      <div className="flex justify-between text-sm mb-2">
-        {stepNames.map((name, index) => (
+      <p className="mb-2 font-medium">Progress: {progress}%</p>
+
+      <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+        <div
+          className="bg-blue-700 h-3 rounded-full"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {steps.map((step, index) => (
           <span
-            key={name}
-            className={index <= currentStep ? "font-bold text-primary" : "text-gray-500"}
+            key={step.id}
+            className={`px-3 py-1 rounded text-sm ${
+              index === currentStep
+                ? "bg-blue-700 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
           >
-            {name}
+            {step.name}
           </span>
         ))}
       </div>
-
-      <div className="w-full h-2 bg-gray-200 rounded">
-        <div
-          className="h-2 bg-primary rounded"
-          style={{ width: `${progress}%` }}
-        ></div>
-      </div>
-
-      <p className="text-sm mt-2">
-        {Math.round(progress)}% Complete
-      </p>
     </div>
   );
 }

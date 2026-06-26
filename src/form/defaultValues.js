@@ -1,0 +1,47 @@
+export const defaultValues = {
+  loanType: "",
+  amount: "",
+  tenure: "",
+  purpose: "",
+
+  fullName: "",
+  dob: "",
+  gender: "",
+  maritalStatus: "",
+  fatherName: "",
+  motherName: "",
+  email: "",
+  mobile: "",
+  alternateMobile: "",
+
+  pan: "",
+  aadhaar: "",
+  aadhaarConsent: false,
+
+  houseNo: "",
+  street: "",
+  pinCode: "",
+  city: "",
+  state: "",
+  postOffice: "",
+  residenceType: "",
+  rentAmount: "",
+  yearsAtAddress: "",
+  previousAddress: "",
+  sameAsPermanent: false,
+
+  employmentType: "",
+  companyName: "",
+  designation: "",
+  monthlyIncome: "",
+  workExperience: "",
+
+  profession: "",
+  annualIncome: "",
+  yearsInProfession: "",
+
+  businessName: "",
+  gstNumber: "",
+  annualTurnover: "",
+  yearsInBusiness: "",
+};

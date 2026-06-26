@@ -1,43 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
+
 import Input from "../components/common/Input";
 import Select from "../components/common/Select";
 import CheckBox from "../components/common/CheckBox";
 import usePinCodeLookup from "../hooks/usePinCodeLookup";
 
 function Step4() {
-  const [pinCode, setPinCode] = useState("");
-  const [address, setAddress] = useState({
-    houseNo: "",
-    street: "",
-    city: "",
-    state: "",
-    postOffice: "",
-    residenceType: "",
-    rentAmount: "",
-    yearsAtAddress: "",
-    previousAddress: "",
-    sameAsPermanent: false,
-  });
+  const { watch, setValue } = useFormContext();
+
+  const pinCode = watch("pinCode");
+  const houseNo = watch("houseNo");
+  const street = watch("street");
+  const city = watch("city");
+  const state = watch("state");
+  const postOffice = watch("postOffice");
+  const residenceType = watch("residenceType");
+  const rentAmount = watch("rentAmount");
+  const yearsAtAddress = watch("yearsAtAddress");
+  const previousAddress = watch("previousAddress");
+  const sameAsPermanent = watch("sameAsPermanent");
 
   const pinResult = usePinCodeLookup(pinCode);
 
   useEffect(() => {
     if (pinResult.city && pinResult.state) {
-      setAddress((prev) => ({
-        ...prev,
-        city: pinResult.city,
-        state: pinResult.state,
-        postOffice: pinResult.postOffice,
-      }));
+      setValue("city", pinResult.city);
+      setValue("state", pinResult.state);
+      setValue("postOffice", pinResult.postOffice);
     }
-  }, [pinResult.city, pinResult.state, pinResult.postOffice]);
-
-  const handleChange = (field, value) => {
-    setAddress((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  }, [pinResult.city, pinResult.state, pinResult.postOffice, setValue]);
 
   return (
     <div className="space-y-4">
@@ -45,55 +37,61 @@ function Step4() {
 
       <Input
         label="House / Flat No."
-        value={address.houseNo}
-        onChange={(e) => handleChange("houseNo", e.target.value)}
+        value={houseNo}
+        onChange={(e) => setValue("houseNo", e.target.value)}
       />
 
       <Input
         label="Street / Area"
-        value={address.street}
-        onChange={(e) => handleChange("street", e.target.value)}
+        value={street}
+        onChange={(e) => setValue("street", e.target.value)}
       />
 
       <Input
         label="PIN Code"
         value={pinCode}
-        onChange={(e) => setPinCode(e.target.value)}
+        onChange={(e) => setValue("pinCode", e.target.value)}
         maxLength="6"
       />
 
-      {pinResult.isLoading && <p className="text-blue-600">Looking up PIN...</p>}
-      {pinResult.error && <p className="text-red-600">{pinResult.error}</p>}
+      {pinResult.isLoading && (
+        <p className="text-blue-600">Looking up PIN...</p>
+      )}
+
+      {pinResult.error && (
+        <p className="text-red-600">{pinResult.error}</p>
+      )}
 
       <Input
         label="City"
-        value={address.city}
-        onChange={(e) => handleChange("city", e.target.value)}
+        value={city}
+        onChange={(e) => setValue("city", e.target.value)}
       />
 
       <Input
         label="State"
-        value={address.state}
-        onChange={(e) => handleChange("state", e.target.value)}
+        value={state}
+        onChange={(e) => setValue("state", e.target.value)}
       />
+
       {pinResult.state &&
-        address.state &&
-        pinResult.state.toLowerCase() !== address.state.toLowerCase() && (
+        state &&
+        pinResult.state.toLowerCase() !== state.toLowerCase() && (
           <p className="text-amber-600 text-sm">
             ⚠ State does not match the entered PIN code.
           </p>
-      )}
+        )}
 
       <Input
         label="Post Office"
-        value={address.postOffice}
-        onChange={(e) => handleChange("postOffice", e.target.value)}
+        value={postOffice}
+        onChange={(e) => setValue("postOffice", e.target.value)}
       />
 
       <Select
         label="Residence Type"
-        value={address.residenceType}
-        onChange={(e) => handleChange("residenceType", e.target.value)}
+        value={residenceType}
+        onChange={(e) => setValue("residenceType", e.target.value)}
         options={[
           { value: "owned", label: "Owned" },
           { value: "rented", label: "Rented" },
@@ -101,34 +99,34 @@ function Step4() {
         ]}
       />
 
-      {address.residenceType === "rented" && (
+      {residenceType === "rented" && (
         <Input
           label="Monthly Rent Amount"
           type="number"
-          value={address.rentAmount}
-          onChange={(e) => handleChange("rentAmount", e.target.value)}
+          value={rentAmount}
+          onChange={(e) => setValue("rentAmount", e.target.value)}
         />
       )}
 
       <Input
         label="Years at Current Address"
         type="number"
-        value={address.yearsAtAddress}
-        onChange={(e) => handleChange("yearsAtAddress", e.target.value)}
+        value={yearsAtAddress}
+        onChange={(e) => setValue("yearsAtAddress", e.target.value)}
       />
 
-      {Number(address.yearsAtAddress) < 1 && address.yearsAtAddress !== "" && (
+      {Number(yearsAtAddress) < 1 && yearsAtAddress !== "" && (
         <Input
           label="Previous Address"
-          value={address.previousAddress}
-          onChange={(e) => handleChange("previousAddress", e.target.value)}
+          value={previousAddress}
+          onChange={(e) => setValue("previousAddress", e.target.value)}
         />
       )}
 
       <CheckBox
         label="Same as permanent address"
-        checked={address.sameAsPermanent}
-        onChange={(e) => handleChange("sameAsPermanent", e.target.checked)}
+        checked={sameAsPermanent}
+        onChange={(e) => setValue("sameAsPermanent", e.target.checked)}
       />
     </div>
   );

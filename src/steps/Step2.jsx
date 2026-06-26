@@ -1,5 +1,4 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFormContext } from "react-hook-form";
 
 import Input from "../components/common/Input";
 import Select from "../components/common/Select";
@@ -8,22 +7,16 @@ import RadioGroup from "../components/common/RadioGroup";
 import { step2Schema } from "../schemas/step2Schema";
 
 function Step2() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(step2Schema),
-  });
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+const {
+  register,
+  watch,
+  setValue,
+  trigger,
+  formState: { errors },
+} = useFormContext();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div className="space-y-4">
 
       <h2 className="text-2xl font-bold">
         Step 2: Personal Information
@@ -97,14 +90,9 @@ function Step2() {
         {...register("alternateMobile")}
       />
 
-      <button
-        type="submit"
-        className="px-4 py-2 bg-blue-700 text-white rounded"
-      >
-        Validate Step 2
-      </button>
+      
 
-    </form>
+    </div>
   );
 }
 
